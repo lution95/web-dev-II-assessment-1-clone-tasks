@@ -1,0 +1,299 @@
+/* ==========================================================================
+   watch.it - Clone Task 2 (Responsive Layouts)
+   Approach: mobile-first. The base styles are the mobile layout; the
+   breakpoints below add the tablet (720px) and desktop (1024px) layouts.
+
+   Sections:
+   1. Design tokens
+   2. Base / reset
+   3. Buttons
+   4. Header & navigation
+   5. Page container
+   6. Movie list (grid)
+   7. Movie card (base = mobile)
+   8. Tablet  (min-width: 720px)
+   9. Desktop (min-width: 1024px)
+   10. Accessibility
+   ========================================================================== */
+
+/* 1. Design tokens -------------------------------------------------------- */
+:root {
+  /* watch.it brand colours */
+  --color-black: #070410; /* page background */
+  --color-purple: #231651; /* header + cards */
+  --color-turquoise: #4dccbd; /* accents */
+  --color-yellow: #eef36a; /* buttons */
+  --color-white: #ffffff; /* text */
+
+  /* Spacing - "small" is constant, "large" grows with the screen size */
+  --small-gap: 16px;
+  --large-gap: 16px; /* mobile */
+  --page-gutter: 0px; /* mobile cards run edge to edge, as in the wireframe */
+
+  /* Layout */
+  --content-max-width: 900px;
+  --shadow-offset: 8px;
+
+  /* Typography */
+  --font-display: 'Teko', 'Impact', sans-serif; /* logo, headings, buttons */
+  --font-body: 'Lato', 'Segoe UI', system-ui, sans-serif;
+  --logo-size: 2em; /* 3em on tablet and desktop */
+  --card-size: 1.5em;
+  --button-size: 2rem; /* 2em of the root size, unaffected by the card's 1.5em */
+}
+
+/* 2. Base / reset --------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* 3. Buttons -------------------------------------------------------------- */
+/* Shared by "Search" and "Watch Now": small spacing + small border radius. */
+.button {
+  padding: var(--small-gap);
+  border: 2px solid var(--color-black);
+  border-radius: var(--small-gap);
+  background: var(--color-yellow);
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-size: var(--button-size);
+  font-weight: 500;
+  line-height: 0.85;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--color-turquoise);
+}
+
+.button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+/* 4. Header & navigation -------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--small-gap);
+  padding: var(--small-gap);
+  background: var(--color-purple);
+  box-shadow: 0 var(--shadow-offset) 0 var(--color-turquoise);
+}
+
+.site-header__logo {
+  font-family: var(--font-display);
+  font-size: var(--logo-size);
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* The mobile wireframe has no genre links. */
+.site-nav {
+  display: none;
+}
+
+.site-nav__list {
+  display: flex;
+  gap: var(--large-gap); /* large spacing between navigation options */
+}
+
+.site-nav__link {
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.site-nav__link:hover {
+  border-bottom-color: var(--color-turquoise);
+}
+
+/* 5. Page container ------------------------------------------------------- */
+.page-main {
+  padding: var(--large-gap) var(--page-gutter) calc(var(--large-gap) + var(--shadow-offset));
+}
+
+/* Primary content container: max 900px, centred, large spacing inside. */
+.main-content {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+/* 6. Movie list (grid) ---------------------------------------------------- */
+/* Mobile: a single column of cards. */
+.movie-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--large-gap);
+}
+
+/* 7. Movie card (base = mobile: poster, description, button stacked) ------ */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-purple);
+  border: 2px solid var(--color-turquoise);
+  font-size: var(--card-size);
+}
+
+.movie-card__poster {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.movie-card__body {
+  display: flex;
+  flex: 1; /* fill the card so buttons line up along the bottom */
+  flex-direction: column;
+  gap: var(--small-gap);
+  padding: var(--small-gap);
+}
+
+.movie-card__text {
+  display: flex;
+  flex: 1; /* pushes the button to the bottom of the card */
+  flex-direction: column;
+  gap: 4px;
+}
+
+.movie-card__title {
+  color: var(--color-turquoise);
+  font-family: var(--font-display);
+  font-size: 1.4em;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.movie-card__description {
+  font-size: 1em;
+}
+
+.movie-card__button {
+  width: 100%;
+}
+
+/* 8. Tablet (720px and up) ------------------------------------------------ */
+@media (min-width: 720px) {
+  :root {
+    --large-gap: 32px;
+    --page-gutter: var(--large-gap);
+    --logo-size: 3em;
+  }
+
+  /* Header: logo | centred navigation | search button */
+  .site-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .site-nav {
+    display: block;
+  }
+
+  .site-header__search {
+    justify-self: end;
+  }
+
+  /* Two columns of equal cards. */
+  .movie-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .movie-card {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-turquoise);
+  }
+}
+
+/* 9. Desktop (1024px and up) ---------------------------------------------- */
+@media (min-width: 1024px) {
+  :root {
+    --large-gap: 48px;
+  }
+
+  /* Featured card: wide poster, then text with the button on its right. */
+  .movie-card--featured {
+    grid-column: 1 / -1;
+  }
+
+  .movie-card--featured .movie-card__poster {
+    aspect-ratio: 3 / 1;
+    object-position: center 25%;
+  }
+
+  .movie-card--featured .movie-card__body {
+    display: grid;
+    grid-template-columns: 1fr 30%;
+    align-items: stretch;
+  }
+
+  /* Standard cards (2nd and 3rd) already match the base layout: they sit
+     side by side in the two-column grid. */
+
+  /* Horizontal cards: poster on the left, text and button on the right. */
+  .movie-card--horizontal {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .movie-card--horizontal .movie-card__poster {
+    align-self: stretch;
+    height: 100%;
+  }
+}
+
+/* 10. Accessibility -------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

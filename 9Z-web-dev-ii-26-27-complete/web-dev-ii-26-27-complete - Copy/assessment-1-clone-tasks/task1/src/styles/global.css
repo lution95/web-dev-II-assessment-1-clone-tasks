@@ -1,0 +1,437 @@
+/* ==========================================================================
+   Erased Tapes blog - Clone Task 1
+   Sections:
+   1. Design tokens
+   2. Base / reset
+   3. Page layout
+   4. Header & navigation
+   5. Article
+   6. Album gallery
+   7. Social icons
+   8. Author
+   9. Comments
+   10. Footer
+   11. Responsive adjustments
+   ========================================================================== */
+
+/* 1. Design tokens -------------------------------------------------------- */
+:root {
+  /* Colours (from the specification) */
+  --page-bg: #e9e9e9;
+  --content-bg: #ffffff;
+  --footer-bg: #14181d;
+  --text: #14181d;
+  --text-muted: #4a5058;
+  --footer-text: #ffffff;
+
+  /* Spacing (from the specification) */
+  --space: 50px; /* standard spacing between elements */
+  --icon-gap: 10px; /* spacing between social icons */
+
+  /* Sizes (from the specification) */
+  --logo-width: 200px;
+  --photo-width: 200px;
+  --icon-size: 50px;
+  --content-width: 900px;
+
+  /* Typography */
+  --font-heading: 'Protest Guerrilla', 'Impact', 'Arial Black', sans-serif;
+  --font-body: 'Josefin Sans', 'Segoe UI', system-ui, sans-serif;
+  --heading-size: 3em; /* headings are 3x the default font size */
+  --title-size: clamp(4.5rem, 14vw, 8rem); /* the title is much larger */
+  --intro-size: 1.5rem; /* first paragraph is larger than the rest */
+  --body-size: 1.0625rem;
+}
+
+/* 2. Base / reset --------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 400; /* Protest Guerrilla ships a single weight */
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: var(--heading-size);
+}
+
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid #2f6fed;
+  outline-offset: 3px;
+}
+
+/* 3. Page layout ---------------------------------------------------------- */
+.page {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+.content {
+  background: var(--content-bg);
+  border: 1px solid rgba(20, 24, 29, 0.35);
+  border-bottom: 0;
+}
+
+/* 4. Header & navigation -------------------------------------------------- */
+.site-header {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 30px;
+}
+
+.site-header__logo {
+  width: var(--logo-width);
+  height: auto;
+}
+
+.site-header__logo-link {
+  display: block;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.site-header__logo-link:hover {
+  transform: rotate(-6deg);
+}
+
+/* Both navigations share the same three-column structure. */
+.main-nav__list,
+.footer-nav__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+}
+
+.main-nav {
+  padding-bottom: 30px;
+}
+
+.main-nav__link,
+.footer-nav__link {
+  display: inline-block;
+  padding: 4px 2px;
+  font-size: 1.125rem;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+  transition: background-size 0.25s ease;
+}
+
+.main-nav__link:hover,
+.footer-nav__link:hover {
+  background-size: 100% 2px;
+}
+
+/* 5. Article -------------------------------------------------------------- */
+.article {
+  padding: var(--space);
+}
+
+.article__title {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.article__title-main {
+  font-size: var(--title-size);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.article__title-sub {
+  font-size: var(--heading-size);
+  margin-top: 0.1em;
+  text-wrap: balance; /* Protest Guerrilla is wide, so split the subtitle evenly */
+}
+
+.article__intro {
+  max-width: 34em;
+  margin-bottom: var(--space);
+  font-size: var(--intro-size);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Three columns on desktop: CSS Grid. */
+.article__columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space);
+}
+
+.article__column {
+  min-width: 0; /* stop long words stretching a grid track */
+}
+
+.article__heading {
+  margin-bottom: 0.5em;
+}
+
+.article__heading:not(:first-child) {
+  margin-top: 0.4em;
+}
+
+.article__paragraph {
+  margin-bottom: 1.5em;
+  font-size: var(--body-size);
+  color: var(--text-muted);
+}
+
+.article__paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* 6. Album gallery -------------------------------------------------------- */
+/* Featured cover = 2 columns x 2 rows; four small covers fill the rest. */
+.gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  aspect-ratio: 2 / 1; /* keeps every tile square */
+  border-top: 1px solid rgba(20, 24, 29, 0.35);
+  border-bottom: 1px solid rgba(20, 24, 29, 0.35);
+}
+
+.gallery__item {
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+}
+
+.gallery__item--featured {
+  grid-row: span 2;
+}
+
+.gallery__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery__item:hover .gallery__image {
+  transform: scale(1.05);
+}
+
+/* 7. Social icons --------------------------------------------------------- */
+.social-icons {
+  display: flex;
+  gap: var(--icon-gap);
+}
+
+.social-icons--column {
+  flex-direction: column;
+}
+
+.social-icons__image {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.social-icons a {
+  display: block;
+  border-radius: 50%;
+}
+
+.social-icons a:hover .social-icons__image {
+  transform: scale(1.1);
+}
+
+/* White glyph icons (Twitter / X) need a dark disc to be visible on white. */
+.social-icons__image--mono {
+  padding: 13px;
+  border-radius: 50%;
+  background: var(--footer-bg);
+}
+
+/* In the footer the page is already dark, so a faint ring is enough. */
+.site-footer .social-icons__image--mono {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+/* 8. Author --------------------------------------------------------------- */
+.author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space);
+  padding: var(--space);
+}
+
+.author__text {
+  flex: 0 1 430px;
+}
+
+.author__heading {
+  margin-bottom: 0.4em;
+  text-align: center;
+}
+
+.author__bio {
+  font-size: var(--body-size);
+  color: var(--text-muted);
+}
+
+.author__photo {
+  flex: none;
+  width: var(--photo-width);
+  height: var(--photo-width);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 9. Comments ------------------------------------------------------------- */
+.comments {
+  padding: var(--space);
+  background: var(--page-bg); /* grey block, as in the wireframe */
+  border-top: 1px solid rgba(20, 24, 29, 0.35);
+}
+
+.comments__heading {
+  margin-bottom: 0.4em;
+}
+
+.comments__list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.comment {
+  max-width: 26rem;
+}
+
+.comment__username {
+  display: block;
+  font-weight: 700;
+}
+
+.comment__text {
+  font-size: var(--body-size);
+  color: var(--text-muted);
+}
+
+/* 10. Footer -------------------------------------------------------------- */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: var(--space);
+  background: var(--footer-bg);
+  color: var(--footer-text);
+}
+
+.footer-nav {
+  width: 100%;
+}
+
+.site-footer__copyright {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* 11. Responsive adjustments ---------------------------------------------- */
+/* The brief only supplies a desktop wireframe; these keep it usable on
+   smaller screens without changing the desktop design. */
+@media (max-width: 900px) {
+  .content {
+    border-left: 0;
+    border-right: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --space: 24px;
+  }
+
+  .article__columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .article__paragraph:last-child {
+    margin-bottom: 1.5em;
+  }
+
+  .author {
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .author__text {
+    flex-basis: auto;
+  }
+
+  .social-icons--column {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --heading-size: 2.25em; /* keep headings from overflowing on phones */
+  }
+
+  .site-footer .footer-nav__list {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
